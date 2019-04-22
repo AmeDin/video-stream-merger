@@ -12,3 +12,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+div.disabled { 
+  pointer-events: none; 
+-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; 
+user-select: none;
+}
+div.disabled *:focus { outline: 0; }
+
+.float{
+  float: left;
+}
