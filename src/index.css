@@ -20,6 +20,14 @@ user-select: none;
 }
 div.disabled *:focus { outline: 0; }
 
-.float{
+.floatleft{
   float: left;
+}
+
+.floatright{
+  float: right;
+}
+
+.addMarginTop{
+  margin-top: 150px;
 }

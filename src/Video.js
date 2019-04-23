@@ -2,7 +2,7 @@ import React from 'react'
 const Video = ({config}) => {
 
   return (
-    <div className="card z-depth-0 project-summary float" >
+    <div className={config.float}  >
       <video controls id={config.id}></video>
     </div>
   )
