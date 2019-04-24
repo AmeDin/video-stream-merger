@@ -37,13 +37,12 @@ class App extends Component {
 
   handleStart= (e) => {
     const { videos } = this.props.video
-    {videos && videos.map(video => {
+    for (const video of videos) {
       video.videoStreamMerger.start()
       var outputElement = document.querySelector("#"+video.id)
       outputElement.srcObject = video.videoStreamMerger.result
       outputElement.autoplay = true
-      
-     })}
+    }
     console.log(this.props)
   }
 
@@ -69,7 +68,7 @@ class App extends Component {
       }
     })
 
-    if(mp4Element.playing == false)  {
+    if(mp4Element.playing === false)  {
       await mp4Element.play()
     }
 
@@ -144,9 +143,9 @@ class App extends Component {
   componentDidMount(){
      //store.dispatch(loadConfig())
      const { configs } = this.props.config
-     {configs && configs.map(config => {
+      for (const config of configs) {
        this.handleVideo(config.id,config.x, config.y, config.sizeMultiplier)
-      })}
+      }
       console.log(this.props)
   }
 
