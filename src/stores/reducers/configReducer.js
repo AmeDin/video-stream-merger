@@ -1,10 +1,10 @@
 const initState = {
     configs: [
-        {iid: 1, id: 'out1', x: 0, y: 0, sizeMultiplier: 2, float:'floatleft'},
-        {iid: 2, id: 'out2', x: -400, y: 0, sizeMultiplier: 2, float:'floatright'},
-        // {id: 'outMid', x: 0, y: 0, sizeMultiplier: 1, float:'floatleft'},
-        {iid: 3, id: 'out3', x: 0, y: -304, sizeMultiplier: 2, float:'floatleft'},
-        {iid: 4, id: 'out4', x: -400, y: -304, sizeMultiplier: 2, float:'floatright'},
+        // {iid: 1, id: 'out1', x: 0, y: 0, sizeMultiplier: 2, float:'floatleft'},
+        // {iid: 2, id: 'out2', x: -400, y: 0, sizeMultiplier: 2, float:'floatright'},
+        {id: 'outMid', x: 0, y: 0, sizeMultiplier: 1, float:'floatleft'},
+        // {iid: 3, id: 'out3', x: 0, y: -304, sizeMultiplier: 2, float:'floatleft'},
+        // {iid: 4, id: 'out4', x: -400, y: -304, sizeMultiplier: 2, float:'floatright'},
     ]
   }
   

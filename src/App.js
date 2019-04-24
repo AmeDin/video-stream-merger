@@ -35,7 +35,19 @@ class App extends Component {
     console.log(this.props)
   }
 
-  handleVideo = (id,x,y,multiplier) => {
+  handleStart= (e) => {
+    const { videos } = this.props.video
+    {videos && videos.map(video => {
+      video.videoStreamMerger.start()
+      var outputElement = document.querySelector("#"+video.id)
+      outputElement.srcObject = video.videoStreamMerger.result
+      outputElement.autoplay = true
+      
+     })}
+    console.log(this.props)
+  }
+
+  handleVideo = async (id,x,y,multiplier) => {
     var merger = new VideoStreamMerger({
       
     })
@@ -45,10 +57,21 @@ class App extends Component {
 
     mp4Element.muted = true
     mp4Element.autoplay = true
+    //mp4Element.play()
     //mp4Element.repeat = true
     mp4Element.src = mp4 
     mp4Element.loop = true // playback after complete
     mp4Element.msPlayToDisabled = false
+
+    Object.defineProperty(mp4Element, 'playing', {
+      get: function(){
+          return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
+      }
+    })
+
+    if(mp4Element.playing == false)  {
+      await mp4Element.play()
+    }
 
     aacElement.muted = true
     aacElement.src = aac
@@ -59,30 +82,63 @@ class App extends Component {
     // var heightY= y !== 0 ? merger.height * 2 : merger.height; 
     // heightY= x !== 0 ? merger.height * 2 : merger.height
 
-    merger.addMediaElement('aac', aacElement)
+    const centralVideo = {
+      x: merger.width * 1/3,
+      y: merger.height * 1/3,
+      height: merger.height*1/3,
+      width: merger.width*1/3
+    }
+    // define what size you want your 4 cut-up videos to be and where
+    const otherVideos = {
+      width: merger.width * 1/3,
+      height: merger.height * 1/3,
+      x: [0, merger.width - merger.width * 1/3], // x coordinates of both columns
+      y: [0, merger.height - merger.height * 1/2] // y coordinates of both rows
+    }
+
+    //merger.addMediaElement('aac', aacElement)
     merger.addMediaElement('mp4', mp4Element, {
       x: x,
       y: y,
       width: merger.width * multiplier,
       height: merger.height * multiplier,
       mute: false,
-      draw: null,
+      draw: function (ctx, frame, done) { // <- custom draw function
+        if (!frame.videoWidth) return done() // <- need to wait for video element to load
+    
+        // draw the full frame in the center (easy part)
+        ctx.drawImage(frame, centralVideo.x, centralVideo.y, centralVideo.width, centralVideo.height)
+    
+        // draw the cut-up parts in each corner
+        otherVideos.x.forEach((colX, i) => { // loop over columns
+          otherVideos.y.forEach((rowY, j) => { // loop over rows
+            // this defines what part of the frame you're drawing
+            const [sx, sy, sWidth, sHeight] = [i*frame.videoWidth/2, j*frame.videoHeight/2, frame.videoWidth/2, frame.videoHeight/2]
+    
+             // this defines where you're drawing that part
+            const [dx, dy, dWidth, dHeight] = [colX, rowY, otherVideos.width, otherVideos.height]
+            ctx.drawImage(frame, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+          })
+        })
+        done()
+      }
     })
 
     //merger.start()
     const newVideo = {
       id: id,
-      videoStreamMerger: merger
+      videoStreamMerger: merger,
+      mp4: mp4Element
     }
 
     this.props.addVideo(newVideo)
     console.log(this.props)
 
-    var outputElement = document.querySelector("#"+id)
-    // outputElement.width = widthX
-    // outputElement.height = heightY
-    outputElement.srcObject = merger.result
-    outputElement.autoplay = true
+    // var outputElement = document.querySelector("#"+id)
+    // // outputElement.width = widthX
+    // // outputElement.height = heightY
+    // outputElement.srcObject = merger.result
+    // outputElement.autoplay = true
 }
 
   componentDidMount(){
@@ -100,7 +156,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <button onClick={this.handleDelete}>Click to Start</button><br/>
+          <button onClick={this.handleDelete}>Click to Delete</button><br/>
+          <button onClick={this.handleStart}>Click to Start</button><br/>
           <div className="disabled">
               {/* <video controls id="output"></video> */}
             

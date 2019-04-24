@@ -1,5 +1,5 @@
 const initState = {
-    videos: [{id:1, videoStreamMerger:null}]
+    videos: []
   }
   
 const videoReducer = (state = initState, action) => {
@@ -8,7 +8,8 @@ const videoReducer = (state = initState, action) => {
       return { ...state };
     case 'ADD_VIDEO':
         return {
-            videos: [{id:1, videoStreamMerger:null},{id:2, videoStreamMerger:null}]
+          ...state,
+          videos: [action.payload, ...state.videos]
     }
     default:
       return state;
