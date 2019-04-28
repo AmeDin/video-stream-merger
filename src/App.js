@@ -9,6 +9,8 @@ import { loadConfig, deleteConfig } from './actions/configActions';
 import { addVideo, getVideos } from './actions/videoActions';
 import { connect } from 'react-redux' ;
 import  PropTypes from 'prop-types';
+import { AddMessage } from './container/AddMessage';
+import { MessagesList } from './container/MessagesList';
 
 // var configs = [
 //   {id: 'out1', x: 0, y: 0, sizeMultiplier: 2, float:'floatleft'},
@@ -155,6 +157,8 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div className="App">
+          <AddMessage />
+          <MessagesList />
           <button onClick={this.handleDelete}>Click to Delete</button><br/>
           <button onClick={this.handleStart}>Click to Start</button><br/>
           <div className="disabled">
