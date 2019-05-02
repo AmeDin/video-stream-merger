@@ -4,6 +4,7 @@ const initState = {
   
 const videoReducer = (state = initState, action) => {
   switch (action.type) {
+    case 'SYNC_VIDEO':
     case 'GET_VIDEOS':
       return { ...state };
     case 'ADD_VIDEO':

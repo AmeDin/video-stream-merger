@@ -16,6 +16,7 @@ wss.on('connection', (ws) => {
 	let index
 	ws.on('message', (message) => {
 		const data = JSON.parse(message)
+		console.log(data)
 		switch (data.type) {
 			case 'ADD_USER': {
 				index = users.length
@@ -33,6 +34,13 @@ wss.on('connection', (ws) => {
 			case 'ADD_MESSAGE':
 				broadcast({
 					type: 'ADD_MESSAGE',
+					message: data.message,
+					author: data.author
+				}, ws)
+				break
+			case 'SYNC_VIDEO':
+				broadcast({
+					type: 'SYNC_VIDEO',
 					message: data.message,
 					author: data.author
 				}, ws)
