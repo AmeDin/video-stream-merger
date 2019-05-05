@@ -28,9 +28,10 @@ export const populateUsersList = users => ({
 	users
 })
 
-export const syncVideo = (message, author) => ({
+export const syncVideo = (message, author, currentTime) => ({
 	type: types.SYNC_VIDEO,
 	message,
-	author
+	author,
+	currentTime
 })
 

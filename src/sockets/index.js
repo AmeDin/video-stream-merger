@@ -25,8 +25,9 @@ const setupSocket = (dispatch, username) => {
 				dispatch(populateUsersList(data.users))
 				break
 			case types.SYNC_VIDEO:
-				console.log("yo" + data.author + data.message)
-				//dispatch(syncVideo(data.message, data.author))
+				console.log(event)
+				console.log("yo" + data.author + data.message, data.currentTime)
+				dispatch(syncVideo(data.message, data.author, data.currentTime))
 				break
 			default:
 				break

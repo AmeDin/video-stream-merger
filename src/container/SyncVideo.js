@@ -3,8 +3,8 @@ import SyncVideoComponent from '../components/SyncVideo'
 import { syncVideo } from '../actions/wsActions'
 
 const mapDispatchToProps = dispatch => ({
-  dispatch: (message, author) => {
-    dispatch(syncVideo(message, author))
+  dispatch: (message, author, currentTime) => {
+    dispatch(syncVideo(message, author, currentTime))
   }
 })
 

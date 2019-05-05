@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   render() {
-    const { configs } = this.props.config
     console.log(this.props)
     return (
       <Provider store={store}>

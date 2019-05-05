@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga'
 
 import rootReducer from './reducers'
 import setupSocket from '../sockets'
-import handleNewMessage from '../sagas'
+import rootSaga from '../sagas'
 import username from '../utils/names'
 
 const initialState = {};
@@ -19,6 +19,6 @@ const store = createStore(rootReducer, initialState, compose(
 
 const socket = setupSocket(store.dispatch, username)
 
-sagaMiddleware.run(handleNewMessage, {socket, username})
+sagaMiddleware.run(rootSaga, {socket, username})
 
 export default store;
