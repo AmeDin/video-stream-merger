@@ -7,6 +7,7 @@ const SyncVideo = (props) => {
 		<section id="sync-video">
 			<button onClick={(e) => {
 					props.dispatch("Input", 'Me', document.getElementById("outMid").currentTime)
+					console.log(props)
 				}}>Sync</button><br/>
 		</section>
 	)

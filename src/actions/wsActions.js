@@ -35,3 +35,10 @@ export const syncVideo = (message, author, currentTime) => ({
 	currentTime
 })
 
+export const syncIT = (message, author, currentTime) => ({
+	type: types.SYNC_IT,
+	message,
+	author,
+	currentTime
+})
+

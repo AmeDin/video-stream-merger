@@ -1,5 +1,5 @@
 import *  as types from '../constants/ActionTypes'
-import {addUser, messageReceived, populateUsersList, syncVideo } from '../actions/wsActions'
+import {addUser, messageReceived, populateUsersList, syncVideo,syncIT } from '../actions/wsActions'
 
 const setupSocket = (dispatch, username) => {
 	const socket = new WebSocket('ws://localhost:8081', 'echo-protocol');
@@ -26,8 +26,13 @@ const setupSocket = (dispatch, username) => {
 				break
 			case types.SYNC_VIDEO:
 				console.log(event)
-				console.log("yo" + data.author + data.message, data.currentTime)
+				console.log("syncvideo" + data.author + data.message, data.currentTime)
 				dispatch(syncVideo(data.message, data.author, data.currentTime))
+				break
+			case types.SYNC_IT:
+				console.log(event)
+				console.log("syncit" + data.author + data.message, data.currentTime)
+				dispatch(syncIT(data.message, data.author, data.currentTime))
 				break
 			default:
 				break

@@ -46,11 +46,25 @@ wss.on('connection', (ws) => {
 					}
 				}
 				broadcast({
-					type: 'SYNC_VIDEO',
+					type: 'SYNC_IT',
 					message: data.message,
 					author: data.author,
 					currentTime: data.currentTime
 				}, ws)
+				break
+			case 'SYNC_IT':
+				for(i = 0; i < users.length; i++){ 
+					if(users[i].name == data.author) {
+						users[i].currentTime  = data.currentTime
+						break;
+					}
+				}
+				ws.send(JSON.stringify({
+					type: 'SYNC_IT',
+					message: data.message,
+					author: data.author,
+					currentTime: data.currentTime
+				}))
 				break
 			default:
 				break
