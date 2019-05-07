@@ -3,7 +3,8 @@ import VideoStreamMerger from 'video-stream-merger'
 import { connect } from 'react-redux' ;
 
 import { addVideo } from '../actions/videoActions';
-import mp4 from '../matte2short.mp4'
+import { getUser, triggerGetUser } from '../actions/wsActions';
+import mp4 from '../chikufunny.mp4'
 import aac from '../sample.aac'
 import { SyncVideo } from '../container/SyncVideo';
 
@@ -20,14 +21,27 @@ class VideoC extends Component {
         console.log(this.props)
       }
 
+    handleGetUser = () => {
+        this.props.triggerGetUser()
+        console.log(this.props)
+    }
       
     handleStop= (e) => {
       const { videos } = this.props.video
       for (const video of videos) {
         video.videoStreamMerger.destroy()
-        // var outputElement = document.querySelector("#"+video.id)
-        // outputElement.srcObject = video.videoStreamMerger.result
-        // outputElement.autoplay = true
+      }
+      console.log(this.props)
+    }
+
+      
+    handleGetTime= (e) => {
+      const { videos } = this.props.video
+      for (const video of videos) {
+        console.log(mp4.currentTime)
+        var outputElement = document.querySelector("#"+video.id)
+        outputElement.srcObject = video.videoStreamMerger.result
+        console.log(outputElement.currentTime)
       }
       console.log(this.props)
     }
@@ -132,12 +146,17 @@ class VideoC extends Component {
 
       
     
-      componentDidUpdate(){
-        // var video = document.getElementById('outMid');
-				// video.pause()
-				// video.currentTime = 0
-				// video.load()
-     }
+      componentDidUpdate(prevProps){
+        console.log(prevProps)
+        console.log(prevProps.users)
+        if(prevProps.users.length != 0){
+          
+          var vid = document.querySelector("#myVideo")
+          vid.currentTime = prevProps.users[0].currentTime
+          vid.play();
+
+        }
+      }
 
   render() {
     const { configs } = this.props.config
@@ -151,6 +170,8 @@ class VideoC extends Component {
       <SyncVideo />
       <button onClick={this.handleStart}>Click to Start</button><br/>
       <button onClick={this.handleStop}>Click to Stop</button><br/>
+      <button onClick={this.handleGetTime}>Click to GetTime</button><br/>
+      <button className="btn grey" onClick={this.handleGetUser}>Get User</button>
           <div className="disabled">
               {/* <video controls id="output"></video> */}
             
@@ -170,11 +191,13 @@ class VideoC extends Component {
 
 const mapStateToProps = (state) => ({
     config: state.config,
+    users: state.users,
     video: state.video
 })
 
 const mapDispatchToProps = dispatch => ({
     addVideo: (video) => dispatch(addVideo(video)),
+    triggerGetUser: () => dispatch(triggerGetUser()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoC);

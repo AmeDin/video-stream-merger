@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
 		switch (data.type) {
 			case 'ADD_USER': {
 				index = users.length
-				users.push({ name: data.name, id: index + 1, currentTime: 0})
+				users.push({ name: data.name, ws: ws, id: index + 1, currentTime: 0})
 				ws.send(JSON.stringify({
 					type: 'USERS_LIST',
 					users
@@ -45,10 +45,16 @@ wss.on('connection', (ws) => {
 						break;
 					}
 				}
+				ws.send(JSON.stringify({
+					type: 'SYNC_USER_VIDEO',
+					ws: ws,
+					name: data.author,
+					currentTime: data.currentTime
+				}))
 				broadcast({
-					type: 'SYNC_IT',
-					message: data.message,
-					author: data.author,
+					type: 'SYNC_USER_VIDEO',
+					ws: ws,
+					name: data.author,
 					currentTime: data.currentTime
 				}, ws)
 				break
@@ -64,6 +70,19 @@ wss.on('connection', (ws) => {
 					message: data.message,
 					author: data.author,
 					currentTime: data.currentTime
+				}))
+				break
+			case 'GET_USER': 
+				name = ""
+				for(i = 0; i < users.length; i++){ 
+					if(users[i].ws == ws) {
+						name = users[i].name
+						break;
+					}
+				}
+				ws.send(JSON.stringify({
+					type: 'GET_USER',
+					name: name
 				}))
 				break
 			default:

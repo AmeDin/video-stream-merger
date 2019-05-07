@@ -44,6 +44,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = (state) => ({
   config: state.config,
+  users: state.users,
   video: state.video
 })
 

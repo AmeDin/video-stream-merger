@@ -42,3 +42,22 @@ export const syncIT = (message, author, currentTime) => ({
 	currentTime
 })
 
+export const getUser = (name) => {
+    return {
+        type: types.GET_USER,
+        name: name
+    }
+}
+
+export const triggerGetUser = () => {
+    return {
+        type: types.TRIGGER_GET_USER
+    }
+}
+
+export const syncUserVideo = (ws, name, currentTime) => ({
+	type: types.SYNC_USER_VIDEO,
+	ws,
+	name,
+	currentTime
+})
