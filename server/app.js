@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
 		switch (data.type) {
 			case 'ADD_USER': {
 				index = users.length
-				users.push({ name: data.name, ws: ws, id: index + 1, currentTime: 0})
+				users.push({ name: data.name, ws: ws, id: index + 1, currentTime: 0, merger: null})
 				ws.send(JSON.stringify({
 					type: 'USERS_LIST',
 					users
@@ -39,8 +39,10 @@ wss.on('connection', (ws) => {
 				}, ws)
 				break
 			case 'SYNC_VIDEO':
+				usermerger = null
 				for(i = 0; i < users.length; i++){ 
 					if(users[i].name == data.author) {
+						usermerger = user[i].merger
 						users[i].currentTime  = data.currentTime
 						break;
 					}
@@ -49,13 +51,15 @@ wss.on('connection', (ws) => {
 					type: 'SYNC_USER_VIDEO',
 					ws: ws,
 					name: data.author,
-					currentTime: data.currentTime
+					currentTime: data.currentTime,
+					merger: usermerger
 				}))
 				broadcast({
 					type: 'SYNC_USER_VIDEO',
 					ws: ws,
 					name: data.author,
-					currentTime: data.currentTime
+					currentTime: data.currentTime,
+					merger: usermerger
 				}, ws)
 				break
 			case 'SYNC_IT':
@@ -83,6 +87,18 @@ wss.on('connection', (ws) => {
 				ws.send(JSON.stringify({
 					type: 'GET_USER',
 					name: name
+				}))
+				break
+			case 'ADD_VIDEO':
+				for(i = 0; i < users.length; i++){ 
+					if(users[i].name == data.name) {
+						users[i].merger  = data.videoStreamMerger
+						break;
+					}
+				}
+				ws.send(JSON.stringify({
+					type: 'UPDATE_VIDEO',
+					video: data.video
 				}))
 				break
 			default:

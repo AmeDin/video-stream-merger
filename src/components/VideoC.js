@@ -128,7 +128,8 @@ class VideoC extends Component {
         id: id,
         videoStreamMerger: merger,
         mp4: mp4Element,
-        currentTime: 0
+        currentTime: 0,
+        name: "me"
       }
   
       this.props.addVideo(newVideo)

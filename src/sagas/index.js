@@ -9,7 +9,12 @@ const handleNewMessage = function* handleNewMessage(params) {
 	})
 }
 
-// export default handleNewMessage
+const handleAddVideo = function* handleAddVideo(params) {
+	yield takeEvery(types.ADD_VIDEO, (action) => {
+		action.name = params.username
+		params.socket.send(JSON.stringify(action))
+	})
+}
 
 const handleSyncVideo = function* handleSyncVideo(params) {
 	yield takeEvery(types.SYNC_VIDEO, (action) => {
@@ -29,6 +34,7 @@ const handleGetUser = function* handleGetUser(params) {
 export default function* rootSaga(params) {
 	yield all([
 		handleSyncVideo(params),
+		handleAddVideo(params),
 	  	handleNewMessage(params),
 	  	handleGetUser(params)
 	])

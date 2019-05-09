@@ -10,3 +10,10 @@ export const addVideo = (video) => {
         payload: video
     };
 }
+
+export const updateVideo = (video) => {
+    return {
+        type: "UPDATE_VIDEO",
+        payload: video
+    };
+}
