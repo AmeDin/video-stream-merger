@@ -11,7 +11,9 @@ const handleNewMessage = function* handleNewMessage(params) {
 
 const handleAddVideo = function* handleAddVideo(params) {
 	yield takeEvery(types.ADD_VIDEO, (action) => {
-		action.name = params.username
+		console.log(action)
+		action.payload.name = params.username
+		console.log(JSON.stringify(action))
 		params.socket.send(JSON.stringify(action))
 	})
 }

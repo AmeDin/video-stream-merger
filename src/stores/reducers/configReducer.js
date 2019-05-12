@@ -9,7 +9,6 @@ const initState = {
   }
   
 const configReducer = (state = initState, action) => {
-  console.log("hi")
   switch (action.type) {
     case 'CONFIG_LOADED':
       return { ...state };

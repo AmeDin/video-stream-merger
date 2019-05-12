@@ -55,9 +55,18 @@ export const triggerGetUser = () => {
     }
 }
 
-export const syncUserVideo = (ws, name, currentTime) => ({
+export const syncUserVideo = (ws, name, currentTime, merger) => ({
 	type: types.SYNC_USER_VIDEO,
 	ws,
 	name,
-	currentTime
+	currentTime,
+	merger
+})
+
+export const updateUserVideo = (ws, name, currentTime, merger) => ({
+	type: types.UPDATE_VIDEO,
+	ws,
+	name,
+	currentTime,
+	merger
 })

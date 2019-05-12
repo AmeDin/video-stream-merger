@@ -7,6 +7,13 @@ const users = []
 const broadcast = (data, ws) => {
 	wss.clients.forEach((client) => {
 		if (client.readyState === WebSocket.OPEN && client !== ws ) { 
+			for(i = 0; i < users.length; i++){ 
+				if(users[i].ws === client) {
+					data.name = users[i].name
+					break
+				}
+			}
+			console.log(data.name)
 			client.send(JSON.stringify(data))
 		}
 	})
@@ -17,6 +24,7 @@ wss.on('connection', (ws) => {
 	ws.on('message', (message) => {
 		const data = JSON.parse(message)
 		console.log(data)
+		// console.log(users)
 		switch (data.type) {
 			case 'ADD_USER': {
 				index = users.length
@@ -40,9 +48,10 @@ wss.on('connection', (ws) => {
 				break
 			case 'SYNC_VIDEO':
 				usermerger = null
+				// console.log(users)
 				for(i = 0; i < users.length; i++){ 
 					if(users[i].name == data.author) {
-						usermerger = user[i].merger
+						usermerger = users[i].merger
 						users[i].currentTime  = data.currentTime
 						break;
 					}
@@ -91,15 +100,20 @@ wss.on('connection', (ws) => {
 				break
 			case 'ADD_VIDEO':
 				for(i = 0; i < users.length; i++){ 
-					if(users[i].name == data.name) {
-						users[i].merger  = data.videoStreamMerger
+					if(users[i].name == data.payload.name) {
+						users[i].merger  = data.payload.videoStreamMerger
 						break;
 					}
 				}
+				console.log(data.payload)
 				ws.send(JSON.stringify({
 					type: 'UPDATE_VIDEO',
-					video: data.video
+					ws: ws,
+					name:  data.payload.name,
+					currentTime:  data.payload.currentTime,
+					merger: data.payload.videoStreamMerger
 				}))
+				// console.log(users)
 				break
 			default:
 				break

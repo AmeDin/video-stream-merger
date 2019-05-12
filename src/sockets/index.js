@@ -1,5 +1,5 @@
 import *  as types from '../constants/ActionTypes'
-import {addUser, messageReceived, populateUsersList, syncVideo,syncIT, getUser, syncUserVideo } from '../actions/wsActions'
+import {addUser, messageReceived, populateUsersList, syncVideo,syncIT, getUser, syncUserVideo, updateUserVideo } from '../actions/wsActions'
 import {updateVideo} from '../actions/videoActions'
 
 const setupSocket = (dispatch, username) => {
@@ -47,8 +47,8 @@ const setupSocket = (dispatch, username) => {
 				break
 			case types.UPDATE_VIDEO:
 				console.log(event)
-				console.log("addVideo" + data)
-				//dispatch(addVideo(data.video))
+				console.log("updateUserVideo" + data.ws + data.name, data.currentTime, data.merger)
+				dispatch(updateUserVideo(data.ws, data.name, data.currentTime, data.merger))
 				break
 			default:
 				break
